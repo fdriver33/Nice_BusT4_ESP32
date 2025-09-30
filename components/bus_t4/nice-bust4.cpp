@@ -234,27 +234,27 @@ void NiceBusT4::parse_status_packet (const std::vector<uint8_t> &data) {
       ESP_LOGI(TAG,  "Response to request %X received ", data[10] );
       switch (data[10]) { // cmd_submnu
         case TYPE_M:
-          //           ESP_LOGI(TAG,  "Drive type %X",  data[14]);
+                     ESP_LOGI(TAG,  "Drive type %X",  data[14]);
           switch (data[14]) { //14
             case SLIDING:
               this->class_gate_ = SLIDING;
-              //        ESP_LOGD(TAG, "Gate type: Sliding %#X ", data[14]);
+                      ESP_LOGD(TAG, "Gate type: Sliding %#X ", data[14]);
               break;
             case SECTIONAL:
               this->class_gate_ = SECTIONAL;
-              //        ESP_LOGD(TAG, "Gate type: Sectional %#X ", data[14]);
+                      ESP_LOGD(TAG, "Gate type: Sectional %#X ", data[14]);
               break;
             case SWING:
               this->class_gate_ = SWING;
-              //        ESP_LOGD(TAG, "Gate type: Swing %#X ", data[14]);
+                      ESP_LOGD(TAG, "Gate type: Swing %#X ", data[14]);
               break;
             case BARRIER:
               this->class_gate_ = BARRIER;
-              //        ESP_LOGD(TAG, "Gate type: Barrier %#X ", data[14]);
+                      ESP_LOGD(TAG, "Gate type: Barrier %#X ", data[14]);
               break;
             case UPANDOVER:
               this->class_gate_ = UPANDOVER;
-              //        ESP_LOGD(TAG, "Gate type: Up-and-over %#X ", data[14]);
+                      ESP_LOGD(TAG, "Gate type: Up-and-over %#X ", data[14]);
               break;
           }  // switch 14
           break; //  TYPE_M
@@ -391,26 +391,26 @@ void NiceBusT4::parse_status_packet (const std::vector<uint8_t> &data) {
 
       switch (data[10]) {
         case MAN:
-          //       ESP_LOGCONFIG(TAG, "  Manufacturer: %S ", str.c_str());
+                 ESP_LOGCONFIG(TAG, "  Manufacturer: %S ", str.c_str());
           this->manufacturer_.assign(this->rx_message_.begin() + 14, this->rx_message_.end() - 2);
           break;
         case PRD:
           if ((this->addr_oxi[0] == data[4]) && (this->addr_oxi[1] == data[5])) { // if the packet is from the receiver
-//            ESP_LOGCONFIG(TAG, "  Receiver: %S ", str.c_str());
+            ESP_LOGCONFIG(TAG, "  Receiver: %S ", str.c_str());
             this->oxi_product.assign(this->rx_message_.begin() + 14, this->rx_message_.end() - 2);
           } // packet from receiver
           else if ((this->addr_to[0] == data[4]) && (this->addr_to[1] == data[5])) { // packet from the drive controller
-//            ESP_LOGCONFIG(TAG, "  Drive: %S ", str.c_str());
+            ESP_LOGCONFIG(TAG, "  Drive: %S ", str.c_str());
             this->product_.assign(this->rx_message_.begin() + 14, this->rx_message_.end() - 2);
             std::vector<uint8_t> wla1 = {0x57,0x4C,0x41,0x31,0x00,0x06,0x57}; // to detect Walky drive
             std::vector<uint8_t> ROBUSHSR10 = {0x52,0x4F,0x42,0x55,0x53,0x48,0x53,0x52,0x31,0x30,0x00}; // to detect ROBUSHSR10 drive
             if (this->product_ == wla1) { 
               this->is_walky = true;
-         //     ESP_LOGCONFIG(TAG, "  WALKY drive!: %S ", str.c_str());
+              ESP_LOGCONFIG(TAG, "  WALKY drive!: %S ", str.c_str());
                                         }
             if (this->product_ == ROBUSHSR10) { 
               this->is_robus = true;
-          //    ESP_LOGCONFIG(TAG, "  ROBUS drive!: %S ", str.c_str());
+         /    ESP_LOGCONFIG(TAG, "  ROBUS drive!: %S ", str.c_str());
                                         }		  
 		  
           }
