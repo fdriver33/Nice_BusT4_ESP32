@@ -10,7 +10,7 @@ esp8266:
 external_components:
   - source:
       type: git
-      url: https://github.com/pruwait/Nice_BusT4
+      url: https://github.com/fdriver33/Nice_BusT4_ESP32
     refresh: 0s
 #  - source: my_components
 
