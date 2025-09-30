@@ -24,7 +24,7 @@ api:
   reboot_timeout: 0s # otherwise it reboots when disconnected from hassio
 
   services:
-# to send hex commands to the drive
+  # to send hex commands to the drive
   - service: raw_command
     variables:
         raw_cmd: string
@@ -45,19 +45,19 @@ api:
       lambda: |-
         nice_cover -> NiceBusT4::send_inf_cmd(to_addr, whose, command, type_command, next_data, data_on, data_command);
 
-# leaf length recognition (gate panel length)
+  # leaf length recognition (gate panel length)
   - service: gate_length_recognition
     then:
       lambda: |-
          nice_cover -> NiceBusT4::set_mcu("0b","01");
 
-# BlueBus devices recognition
+  # BlueBus devices recognition
   - service: devices_recognition
     then:
       lambda: |-
          nice_cover -> NiceBusT4::set_mcu("0a","01");
 
-# closing force
+  # closing force
   - service: closing_force
     variables:
       force: string
@@ -65,7 +65,7 @@ api:
       lambda: |-
          nice_cover -> NiceBusT4::set_mcu("4b", force);
 
-# opening force
+  # opening force
   - service: opening_force
     variables:
       force: string
@@ -73,9 +73,9 @@ api:
       lambda: |-
          nice_cover -> NiceBusT4::set_mcu("4a", force);
 
-
 ota:
   - platform: esphome
+
 # Set status LED for Wemos D1 mini
 status_led:
   pin:
@@ -101,50 +101,27 @@ web_server:
 # Buttons for sending commands
 button:
   - platform: template
-    name: Пошагово
+    name: Step-by-step
     id: sbs
     on_press:
       lambda: |-
            nice_cover -> NiceBusT4::send_cmd(bus_t4::SBS);
 
   - platform: template
-    name: Статус входов
+    name: Inputs status
     id: in_stat
     on_press:
       lambda: |-
            nice_cover -> NiceBusT4::send_raw_cmd("55.0D.00.03.00.66.08.06.6B.04.D0.99.00.00.4D.0D");
 
-#         nice_cover -> NiceBusT4::send_raw_cmd("55 0c 00 ff 00 66 01 05 9D 01 82 01 64 E6 0c");
-# 55.0E.00.03.00.81.08.07.8D.04.0B.A9.00.01.01.A6.0E position search
+  # 55.0E.00.03.00.81.08.07.8D.04.0B.A9.00.01.01.A6.0E position search
 
   - platform: template
-    name: Частичное открытие 1
+    name: Partial open 1
     id: p_opn1
     on_press:
       lambda: |-
          nice_cover -> NiceBusT4::send_cmd(bus_t4::P_OPN1);
-
-#         nice_cover -> NiceBusT4::send_cmd(bus_t4::STOP);
-#         nice_cover -> NiceBusT4::send_cmd(bus_t4::OPEN);
-#         nice_cover -> NiceBusT4::send_cmd(bus_t4::CLOSE);
-#         nice_cover -> NiceBusT4::send_cmd(bus_t4::P_OPN2);
-#         nice_cover -> NiceBusT4::send_cmd(bus_t4::P_OPN3);
-#         nice_cover -> NiceBusT4::send_cmd(bus_t4::P_OPN4);
-#         nice_cover -> NiceBusT4::send_cmd(bus_t4::P_OPN5);
-#         nice_cover -> NiceBusT4::send_cmd(bus_t4::P_OPN6);
-#         nice_cover -> NiceBusT4::send_cmd(bus_t4::UNLK_OPN);  # Unlock and open
-#         nice_cover -> NiceBusT4::send_cmd(bus_t4::CLS_LOCK);  # Close and lock
-#         nice_cover -> NiceBusT4::send_cmd(bus_t4::UNLCK_CLS); # Unlock and close
-#         nice_cover -> NiceBusT4::send_cmd(bus_t4::LOCK);      # Lock
-#         nice_cover -> NiceBusT4::send_cmd(bus_t4::UNLOCK);    # Unlock
-#         nice_cover -> NiceBusT4::send_cmd(bus_t4::HOST_SBS);  # Master SBS
-#         nice_cover -> NiceBusT4::send_cmd(bus_t4::HOST_OPN);  # Master open
-#         nice_cover -> NiceBusT4::send_cmd(bus_t4::HOST_CLS);  # Master close
-#         nice_cover -> NiceBusT4::send_cmd(bus_t4::SLAVE_SBS); # Slave SBS
-#         nice_cover -> NiceBusT4::send_cmd(bus_t4::SLAVE_OPN); # Slave open
-#         nice_cover -> NiceBusT4::send_cmd(bus_t4::SLAVE_CLS); # Slave close
-#         nice_cover -> NiceBusT4::send_cmd(bus_t4::AUTO_ON);   # Auto-opening active
-#         nice_cover -> NiceBusT4::send_cmd(bus_t4::AUTO_OFF);  # Auto-opening inactive
 
 cover:
 - platform: bus_t4
@@ -155,13 +132,12 @@ cover:
 #  address: 0x0003            # drive address
 #  use_address: 0x0081        # gateway address
 
+# Working with the OXI receiver
 
-# working with the OXI receiver
-
-# disable auto-closing if needed for loading/unloading work
+# Disable auto-closing if needed for loading/unloading work
 switch:
   - platform: template
-    name: "Автозакрытие"
+    name: "Auto-closing"
     id: autoclose
     restore_mode: DISABLED
 #    optimistic: true
@@ -183,7 +159,6 @@ switch:
         nice_cover -> NiceBusT4::send_inf_cmd("0003", "04", "84", "a9", "00", true, "00");
         nice_cover -> NiceBusT4::send_inf_cmd("0003", "04", "80", "99", "00", true, "01");
         nice_cover -> NiceBusT4::send_inf_cmd("0003", "04", "84", "99", "00", true, "01");
-
 
 #script:
 #  - id: send_cmd
