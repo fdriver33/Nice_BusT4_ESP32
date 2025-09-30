@@ -410,7 +410,7 @@ void NiceBusT4::parse_status_packet (const std::vector<uint8_t> &data) {
                                         }
             if (this->product_ == ROBUSHSR10) { 
               this->is_robus = true;
-         /    ESP_LOGCONFIG(TAG, "  ROBUS drive!: %S ", str.c_str());
+             ESP_LOGCONFIG(TAG, "  ROBUS drive!: %S ", str.c_str());
                                         }		  
 		  
           }
@@ -735,7 +735,7 @@ void NiceBusT4::parse_status_packet (const std::vector<uint8_t> &data) {
 
 void NiceBusT4::dump_config() {    // add connected controller info to the log
   ESP_LOGCONFIG(TAG, "  Bus T4 Cover");
-  ESP_LOGCONFIG(TAG, "  Address: 0x%02X%02X", *this->header_[1], *this->header_[2]);*/
+  //ESP_LOGCONFIG(TAG, "  Address: 0x%02X%02X", *this->header_[1], *this->header_[2]);*/
   switch (this->class_gate_) {
     case SLIDING:
       ESP_LOGCONFIG(TAG, "  Type: Sliding gate");
@@ -848,7 +848,7 @@ std::vector<uint8_t> NiceBusT4::gen_inf_cmd(const uint8_t to_addr1, const uint8_
 
   // for logging the command
   //  std::string pretty_cmd = format_hex_pretty(frame);
-    ESP_LOGI(TAG,  "INF packet formed: %S ", pretty_cmd.c_str() );
+   // ESP_LOGI(TAG,  "INF packet formed: %S ", pretty_cmd.c_str() );
 
   return frame;
 
